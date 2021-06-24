@@ -2,8 +2,23 @@
 
 const express = require('express')
 const app = express()
+require('dotenv').config()
 // const cors = require('cors')
 // app.use(cors())
+
+const { auth } = require('express-openid-connect');
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  baseURL: process.env.baseURL,
+  clientID: process.env.clientID,
+  issuerBaseURL: process.env.issuerBaseURL,
+  secret: process.env.secret
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const { ExpressPeerServer } = require('peer');
@@ -18,9 +33,14 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname+"/index.html")
-  // res.redirect(`/${uuidV4()}`)
+  if(req.oidc.isAuthenticated()){
+    res.sendFile( __dirname+"/index.html")
+  }
+  else{
+    res.redirect('/login')
+  }
 })
+// req.isAuthenticated is provided from the auth router
 
 app.get('/start',(req,res)=>
 {
@@ -28,7 +48,12 @@ app.get('/start',(req,res)=>
 })
 
 app.get('/:room', (req, res) => {
-  res.render('room', { roomId: req.params.room })
+  if(req.oidc.isAuthenticated()){
+    res.render('room', { roomId: req.params.room })
+  }
+  else{
+    res.redirect('/login')
+  }
 })
 
 io.on('connection', socket => {

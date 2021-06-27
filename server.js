@@ -63,12 +63,16 @@ io.on('connection', socket => {
     // messages
     socket.on('message', (message) => {
       //send message to the same room
+      message='<b>'+userId+'<\/b><\/br>'+message
       io.to(roomId).emit('createMessage', message)
   });
 
+// socket.on('screensharestart',(userId)=>{
+//   socket.broadcast.to(roomId).emit('screensharing')
+// })
     socket.on('disconnect', () => {
       socket.broadcast.to(roomId).emit('user-disconnected', userId);
-      // socket.to(roomId).broadcast.emit('user-disconnected', userId)
+      //socket.to(roomId).broadcast.emit('user-disconnected', userId)
     })
   })
 })

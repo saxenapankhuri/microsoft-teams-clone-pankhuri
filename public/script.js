@@ -1,11 +1,18 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
-var myPeer=new Peer(undefined)
+var myPeer = new Peer(undefined)
 
 let myVideoStream;
+let myScreenStream;
 const myVideo = document.createElement('video')
 myVideo.muted = true;
+const myScreen = document.createElement('video')
+myScreen.muted = true;
 const peers = {}
+if (adapter.browserDetails.browser == 'firefox') {
+  adapter.browserShim.shimGetDisplayMedia(window, 'screen');
+}
+
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
@@ -26,20 +33,21 @@ navigator.mediaDevices.getUserMedia({
   // input value
   let text = $("input");
   // when press enter send message
-  $('html').keydown(function (e) {
+  $('html').keydown(function(e) {
     if (e.which == 13 && text.val().length !== 0) {
       socket.emit('message', text.val());
       text.val('')
     }
   });
   socket.on("createMessage", message => {
-    $("ul").append(`<li class="message"><b>user</b><br/>${message}</li>`);
+    $("ul").append(`<li class="message">${message}</li>`);
     scrollToBottom()
   })
-})
 
-socket.on('user-disconnected', userId => {
-  if (peers[userId]) peers[userId].close()
+  socket.on('user-disconnected', userId => {
+    if (peers[userId]) peers[userId].close()
+  })
+
 })
 
 myPeer.on('open', id => {
@@ -59,15 +67,33 @@ function connectToNewUser(userId, stream) {
   peers[userId] = call
 }
 
+function connectToScreen(userId, stream) {
+  const call = myPeer.call(userId, stream)
+  const video = document.createElement('video')
+  call.on('stream', stream => {
+    addScreenStream(video, stream)
+  })
+  call.on('close', () => {
+    video.remove()
+  })
+}
+
 function addVideoStream(video, stream) {
   video.srcObject = stream
+  videoGrid.append(video)
   video.addEventListener('loadedmetadata', () => {
     video.play()
   })
-  videoGrid.append(video)
 }
 
-
+function addScreenStream(video, stream){
+  video.srcObject = stream
+  videoGrid.append(video)
+  video.play()
+  stream.addEventListener('ended', () => {
+    video.remove()
+  })
+}
 
 const scrollToBottom = () => {
   var d = $('.main__chat_window');
@@ -129,3 +155,43 @@ const setPlayVideo = () => {
   `
   document.querySelector('.main__video_button').innerHTML = html;
 }
+
+// socket.on('screensharing', (userId) => {
+//   connectToScreen(userId, stream);
+// })
+const startScreenShare=()=> {
+    navigator.mediaDevices.getDisplayMedia({
+      video: true
+    }).then(
+      // myPeer.on('onclick', id => {
+      //           socket.emit('screensharestart', id)
+      //         })
+      stream => {
+        myScreenStream = stream;
+        addScreenStream(myScreen, stream)
+        myPeer.on('call', call => {
+          call.answer(stream)
+          const video = document.createElement('video')
+          call.on('stream', stream => {
+            addScreenStream(video, stream)
+          })
+        })
+
+        socket.on('user-connected', userId => {
+          const call = myPeer.call(userId, stream)
+          const video = document.createElement('video')
+
+          peers[userId] = call
+        })
+
+        socket.on('user-disconnected', userId => {
+          if (peers[userId]) peers[userId].close()
+        })
+      }
+    )
+  }
+
+    const leave_user = () => {
+      setStopVideo()
+      window.location.href = "http://localhost:3030"
+    }

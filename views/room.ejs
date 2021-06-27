@@ -14,6 +14,7 @@
    <script src="/socket.io/socket.io.js" defer></script>
    <link rel="stylesheet" href="styles.css">
    <script src="https://kit.fontawesome.com/c939d0e917.js"></script>
+   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
    <script src="script.js" defer></script>
    <style>
       #video-grid{
@@ -47,6 +48,15 @@
                   <i class="fas fa-video"></i>
                   <span>Stop Video</span>
                </div>
+
+               <div onclick="startScreenShare()" class="main__controls__button main__video_button" >
+                  <i class="fas fa-video"></i>
+                  <span>Start Screensharing</span>
+               </div>
+               <!-- <div onclick="playStop()" class="main__controls__button main__video_button" >
+                  <i class="fas fa-video"></i>
+                  <span>Stop Video</span>
+               </div> -->
             </div>
             <div class="main__controls__block">
                <div class="main__controls__button">
@@ -63,8 +73,8 @@
                </div>
             </div>
             <div class="main__controls__block">
-               <div class="main__controls__button">
-                  <span class="leave_meeting">Leave Meeting</span>
+               <div class="main__controls__button" onclick="leave_user()">
+                  <span class="leave_meeting" >Leave Meeting</span>
                </div>
             </div>
          </div>

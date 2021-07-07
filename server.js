@@ -113,7 +113,7 @@ app.post('/newTeamJoin', (req,res)=>{
     res.redirect("/goToTeamsPage");
     db.query("SELECT * FROM users WHERE email ='"+req.body.emailID+"'", (e2,r2)=>{
       db.query("INSERT IGNORE INTO team"+r1[0].id+" (id,participantEmail) VALUES ('"+r2[0].id+ "','"+req.body.emailID+"')");
-      db.query("INSERT IGNORE INTO user"+r2[0].id+" (teamname,teamid) VALUES ('"+ r1[0].teamname+"','"+req.body.teamCode+"')");
+      db.query("INSERT IGNORE INTO user"+r2[0].id+" (id,teamname,teamid) VALUES ('"+ r1[0].id+"','"+ r1[0].teamname+"','"+req.body.teamCode+"')");
     })
   })
   res.redirect("/goToTeamsPage");

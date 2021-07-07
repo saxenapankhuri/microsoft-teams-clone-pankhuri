@@ -30,6 +30,7 @@ navigator.mediaDevices.getUserMedia({
   socket.on('user-connected', userId => {
     connectToNewUser(userId, stream)
   })
+
   // input value
   let text = $("input");
   // when press enter send message
@@ -51,8 +52,15 @@ navigator.mediaDevices.getUserMedia({
 })
 
 myPeer.on('open', id => {
-  socket.emit('join-room', ROOM_ID, id)
+  socket.emit('join-room', ROOM_ID,username, id)
+
+
+    socket.on("initializeChatBox", (message,username) =>{
+      $("ul").append(`<li class="message"><b>${username}</b>:${message}</li>`);
+      scrollToBottom()
+    })
 })
+
 
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
@@ -163,25 +171,21 @@ const startScreenShare=()=> {
     navigator.mediaDevices.getDisplayMedia({
       video: true
     }).then(
-      // myPeer.on('onclick', id => {
-      //           socket.emit('screensharestart', id)
-      //         })
       stream => {
+        const screenStream=stream
         myScreenStream = stream;
         addScreenStream(myScreen, stream)
         myPeer.on('call', call => {
           call.answer(stream)
           const video = document.createElement('video')
           call.on('stream', stream => {
-            addScreenStream(video, stream)
+            addVideoStream(video, stream)
           })
         })
 
         socket.on('user-connected', userId => {
           const call = myPeer.call(userId, stream)
           const video = document.createElement('video')
-
-          peers[userId] = call
         })
 
         socket.on('user-disconnected', userId => {

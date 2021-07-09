@@ -116,12 +116,13 @@
           </div>
           <div class="team-info">
             <h2><%= eachTeam.teamname%></h2>
-            <p>
-              Code: <%=eachTeam.teamid%>
-            </p>
+
           </div>
           <div class="separator">
           </div>
+          <p>
+            <b>Invite Code:</b> <%=eachTeam.teamid%>
+          </p>
           <form method="get" action="/<%=eachTeam.teamid%>">
               <button class="clearfix btn btn-warning btn-block" type="submit">Go to Team!</button>
           </form>

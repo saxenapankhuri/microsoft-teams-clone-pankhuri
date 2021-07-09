@@ -53,8 +53,8 @@ db.connect((err) => {
     return;
   }
   console.log('Connection established');
-  //db.query("CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY,email VARCHAR(255) UNIQUE, name VARCHAR(255), userid VARCHAR(255) UNIQUE,  CONSTRAINT userdatabase UNIQUE(email, userid)  )")
-  //db.query("CREATE TABLE listofteams (id INT AUTO_INCREMENT PRIMARY KEY, teamname VARCHAR(255), roomid VARCHAR(255) UNIQUE)")
+  db.query("CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY,email VARCHAR(255) UNIQUE, name VARCHAR(255), userid VARCHAR(255) UNIQUE,  CONSTRAINT userdatabase UNIQUE(email, userid)  )")
+  db.query("CREATE TABLE IF NOT EXISTS listofteams (id INT AUTO_INCREMENT PRIMARY KEY, teamname VARCHAR(255), roomid VARCHAR(255) UNIQUE)")
 });
 
 app.use('/peerjs', peerServer);
@@ -110,7 +110,8 @@ app.post('/newTeamCreate', (req, res) => {
 app.post('/newTeamJoin', (req,res)=>{
   db.query("SELECT * FROM listofteams WHERE roomid ='"+req.body.teamCode+"'", (e1,r1)=>{
     if(r1.length==0)
-    res.redirect("/goToTeamsPage");
+    {
+      res.redirect("/goToTeamsPage");}
     db.query("SELECT * FROM users WHERE email ='"+req.body.emailID+"'", (e2,r2)=>{
       db.query("INSERT IGNORE INTO team"+r1[0].id+" (id,participantEmail) VALUES ('"+r2[0].id+ "','"+req.body.emailID+"')");
       db.query("INSERT IGNORE INTO user"+r2[0].id+" (id,teamname,teamid) VALUES ('"+ r1[0].id+"','"+ r1[0].teamname+"','"+req.body.teamCode+"')");
@@ -124,7 +125,7 @@ app.get('/:team', requiresAuth(), (req, res) => {
     if (req.oidc.isAuthenticated()) {
       res.render('room', {
         roomId: String(req.params.team).substring(4),
-        username: req.oidc.user.name
+        useremail: req.oidc.user.email
       })
     } else
       res.redirect('/login')
@@ -148,9 +149,12 @@ app.post("/addMessage", requiresAuth(),(req, res) => {
 })
 
 io.on('connection', socket => {
-  socket.on('join-room', (roomId, username,userId) => {
+  socket.on('join-room', (roomId, useremail,userId) => {
+    let username=useremail
+    db.query("SELECT * FROM users WHERE email ='"+useremail+ "'", function(error,result){
+      username=result[0].name;
+    })
     socket.join(roomId)
-    socket.broadcast.to(roomId).emit('user-connected', userId);
     db.query("SELECT * FROM listofteams WHERE roomid = '" + roomId + "'", function(e1, r1) {
         db.query("SELECT * FROM chat" + r1[0].id, function(e2, r2) {
           for(let i=0;i<r2.length;i++){
@@ -158,13 +162,15 @@ io.on('connection', socket => {
           }
           })
         })
+    socket.broadcast.to(roomId).emit('user-connected', userId);
+
     // messages
     socket.on('message', (message) => {
       //send message to the same room
       db.query("SELECT * FROM listofteams WHERE roomid = '" + roomId + "'", function(e1, r1) {
           db.query("INSERT INTO chat"+r1[0].id+" (mssg, username) VALUES ('"+message+"','"+username+"')")
           })
-      io.to(roomId).emit('createMessage','<b>' + username + '<\/b><\/br>' + message)
+      io.to(roomId).emit('createMessage','<b>' + username + ':<\/b><\/br>' + message)
 
     });
 

@@ -52,11 +52,11 @@ navigator.mediaDevices.getUserMedia({
 })
 
 myPeer.on('open', id => {
-  socket.emit('join-room', ROOM_ID,username, id)
+  socket.emit('join-room', ROOM_ID,useremail, id)
 
 
     socket.on("initializeChatBox", (message,username) =>{
-      $("ul").append(`<li class="message"><b>${username}</b>:${message}</li>`);
+      $("ul").append(`<li class="message"><b>${username}:</b><br>${message}</li>`);
       scrollToBottom()
     })
 })

@@ -18,8 +18,6 @@
   <link rel='stylesheet' href='icons/elegantline/style.css' type='text/css' media='all' />
   <link rel='stylesheet' href='assets/css/font-awesome.min.css' type='text/css' media='all' />
   <link rel='stylesheet' href='assets/css/flexslider.css' type='text/css' media='all' />
-  <script src="script.js" defer></script>
-  <script src="teamsPage.js" defer></script>
 </head>
 
 <body class="frontpage">
@@ -30,27 +28,11 @@
     <div id="mega-menu" class="header header2 header-sticky primary-menu icons-no default-skin zoomIn align-right">
       <nav class="navbar navbar-default redq">
         <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <!-- <a class="navbar-brand" href="index.html">
-			<img src="assets/img/logo-dark.png" alt="logo">
-			</a> -->
-          </div>
           <div class="collapse navbar-collapse" id="navbar">
             <a class="mobile-menu-close"><i class="fa fa-close"></i></a>
             <div class="menu-top-menu-container">
               <ul id="menu-top-menu" class="nav navbar-nav nav-list">
-                <!-- <li><a href="#home">Home</a></li>
-					<li><a href="#about">About</a></li>
-					<li><a href="#services">Services</a></li>
-					<li><a href="#pricing">Pricing</a></li>
-					<li><a href="#blog">Blog</a></li>
-					<li><a href="#contact">Contact</a></li> -->
+                <li><a href="/changeUserName">Change User Name</a></li>
                 <li style="background: rgba(255, 255, 0, 0.51);"><a href="/logout">LogOut</a></li>
               </ul>
             </div>
@@ -73,7 +55,7 @@
             <form method="post" action="/newTeamCreate" >
               <div class="form ">
                 <input type="hidden" name="emailID" value="<%= emailID %>">
-                <input type="text" name="teamName" placeholder="Enter name of new team...">
+                <input type="text" name="teamName" placeholder="Enter name of new team..." required>
                 <button class="clearfix btn btn-warning btn-block" type="submit">Create Team</button>
               </div>
             </form>
@@ -83,7 +65,7 @@
             <form method="post" action="/newTeamJoin">
               <div class="form ">
                 <input type="hidden" name="emailID" value="<%= emailID %>">
-                <input type="text" name="teamCode" placeholder="Enter code...">
+                <input type="text" name="teamCode" placeholder="Enter code..." required>
                 <button class="clearfix btn btn-warning btn-block" type="submit">Join Team</button>
               </div>
             </form>

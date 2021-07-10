@@ -71,11 +71,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/goToTeamsPage', (req, res) => {
-  if(req.oidc.isAuthenticated()==false)
-  res.redirect("/login")
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if(err)
-    res.redirect("/login")
+    res.send("Error")
     else{
     if (result.length == 0) {
       let name=req.oidc.user.name;

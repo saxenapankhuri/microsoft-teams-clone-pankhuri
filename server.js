@@ -70,7 +70,7 @@ app.get('/', (req, res) => {
   }
 })
 
-app.get('/goToTeamsPage', requiresAuth(), (req, res) => {
+app.get('/goToTeamsPage', (req, res) => {
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if(err)
     res.redirect("/changeUserName")
@@ -130,7 +130,7 @@ app.post('/newTeamJoin', (req,res)=>{
   res.redirect("/goToTeamsPage");
   })
 
-  app.get("/changeUserName", requiresAuth(), (req,res)=>{
+  app.get("/changeUserName", (req,res)=>{
     res.render('home');
   })
 
@@ -139,7 +139,7 @@ app.post('/newTeamJoin', (req,res)=>{
     res.redirect("/goToTeamsPage");
     })
 
-app.get('/:team', requiresAuth(), (req, res) => {
+app.get('/:team', (req, res) => {
   if (String(req.params.team).substring(0, 4) === "room") {
     if (req.oidc.isAuthenticated()){
       db.query("SELECT * FROM listofteams WHERE roomid = '" + String(req.params.team).substring(4) + "'", function(e1, r1) {
@@ -174,7 +174,7 @@ app.get('/:team', requiresAuth(), (req, res) => {
   }
 })
 
-app.post("/addMessage", requiresAuth(),(req, res) => {
+app.post("/addMessage", (req, res) => {
   db.query("SELECT * FROM users WHERE email ='"+req.oidc.user.email+ "'", function(error,result){
     let username=result[0].name;
     let today = new Date();

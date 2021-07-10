@@ -72,6 +72,8 @@ app.get('/', (req, res) => {
 
 app.get('/goToTeamsPage', requiresAuth(), (req, res) => {
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
+    if(err)
+    res.redirect("/login")
     if (result.length == 0) {
       let name=req.oidc.user.name;
       if(String(name).includes('@'))

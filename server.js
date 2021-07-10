@@ -75,7 +75,7 @@ app.get('/goToTeamsPage', (req, res) => {
     if(err)
     {
       console.log(result);
-      console.log(error)
+      console.log(err)
       res.send("Error")}
     else{
     if (result.length == 0) {

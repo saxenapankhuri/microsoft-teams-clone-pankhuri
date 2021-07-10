@@ -12,8 +12,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
-
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const {
@@ -40,6 +38,7 @@ const config = {
   secret: 'LONG_RANDOM_STRING'
 };
 
+app.use(auth(config));
 const db = mysql.createConnection({
   host: process.env.host,
   user: process.env.user,

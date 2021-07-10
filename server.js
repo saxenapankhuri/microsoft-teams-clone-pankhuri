@@ -71,9 +71,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/goToTeamsPage', (req, res) => {
+  if(req.oidc.isAuthenticated()==false)
+  res.redirect("/login")
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if(err)
-    res.redirect("/changeUserName")
+    res.redirect("/login")
     else{
     if (result.length == 0) {
       let name=req.oidc.user.name;
@@ -131,6 +133,8 @@ app.post('/newTeamJoin', (req,res)=>{
   })
 
   app.get("/changeUserName", (req,res)=>{
+    if(req.oidc.isAuthenticated()==false)
+    res.redirect("/login")
     res.render('home');
   })
 
@@ -140,6 +144,8 @@ app.post('/newTeamJoin', (req,res)=>{
     })
 
 app.get('/:team', (req, res) => {
+  if(req.oidc.isAuthenticated()==false)
+  res.redirect("/login")
   if (String(req.params.team).substring(0, 4) === "room") {
     if (req.oidc.isAuthenticated()){
       db.query("SELECT * FROM listofteams WHERE roomid = '" + String(req.params.team).substring(4) + "'", function(e1, r1) {

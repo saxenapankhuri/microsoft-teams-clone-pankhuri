@@ -60,7 +60,11 @@ app.use('/peerjs', peerServer);
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-
+io.connect('https://microsoft-teams-clone-pankhuri.herokuapp.com', {
+  'reconnection': true,
+  'reconnectionDelay': 500,
+  'reconnectionAttempts': 100000
+});
 app.get('/', (req, res) => {
   if (req.oidc.isAuthenticated()) {
     res.redirect("/goToTeamsPage")

@@ -23,7 +23,7 @@ const config = {
   baseURL: process.env.baseURL,
   clientID: process.env.clientID,
   issuerBaseURL: process.env.issuerBaseURL,
-  secret: process.env.secret
+  secret: 'LONG_RANDOM_STRING'
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL

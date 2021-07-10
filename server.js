@@ -73,7 +73,9 @@ app.get('/', (req, res) => {
 app.get('/goToTeamsPage', (req, res) => {
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if(err)
-    res.send("Error")
+    {
+      console.log(req.oidc.user);
+      res.send("Error")}
     else{
     if (result.length == 0) {
       let name=req.oidc.user.name;

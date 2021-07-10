@@ -41,10 +41,10 @@ const {
   v4: uuidV4
 } = require('uuid')
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
+  host: process.env.host,
+  user: process.env.user,
   password: process.env.dbpassword,
-  database: 'mydb'
+  database: process.env.database
 })
 
 db.connect((err) => {

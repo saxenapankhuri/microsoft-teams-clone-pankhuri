@@ -197,5 +197,5 @@ const startScreenShare=()=> {
 
     const leave_user = () => {
       setStopVideo()
-      window.location.href = "http://localhost:3030"
+      window.location.href = "https://microsoft-teams-clone-pankhuri.herokuapp.com"
     }

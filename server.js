@@ -11,6 +11,20 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+const {
+  ExpressPeerServer
+} = require('peer');
+const peerServer = ExpressPeerServer(server, {
+  debug: true
+});
+const {
+  v4: uuidV4
+} = require('uuid')
 const {
   auth
 } = require('express-openid-connect');
@@ -26,20 +40,6 @@ const config = {
   secret: 'LONG_RANDOM_STRING'
 };
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(auth(config));
-
-const server = require('http').Server(app)
-const io = require('socket.io')(server)
-const {
-  ExpressPeerServer
-} = require('peer');
-const peerServer = ExpressPeerServer(server, {
-  debug: true
-});
-const {
-  v4: uuidV4
-} = require('uuid')
 const db = mysql.createConnection({
   host: process.env.host,
   user: process.env.user,

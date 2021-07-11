@@ -72,11 +72,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/goToTeamsPage', (req, res) => {
+  req.setTimeout(1000* 3600)
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if (err) {
       console.log(result);
       console.log(err.fatal)
-      process.kill(0,'SIGTERM')
       res.send("error");
     } else {
       if (result.length == 0) {

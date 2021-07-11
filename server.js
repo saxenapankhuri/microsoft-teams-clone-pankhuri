@@ -185,6 +185,7 @@ app.get('/:team', requiresAuth(), (req, res) => {
       //check if user is a part of the team; if false, redirect to home page
       db.query("SELECT * FROM listofteams WHERE roomid = '" + String(req.params.team).substring(4) + "'", function(e1, r1) {
         db.query("SELECT * FROM team" + r1[0].id + " WHERE participantEmail = '" + req.oidc.user.email + "'", function(err, result) {
+          console.log(result);
           if (result==undefined||result.length == 0)
             res.redirect("/")
         })

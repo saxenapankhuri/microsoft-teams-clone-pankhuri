@@ -71,11 +71,11 @@ app.get('/', (req, res) => {
   }
 })
 
-app.get('/goToTeamsPage', (req, res) => {
+app.get('/goToTeamsPage',requiresAuth(), (req, res) => {
 
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if (err) {
-      res.redirect("errorpage");
+      res.render("errorpage");
     } else {
       if (result.length == 0) {
         let name = req.oidc.user.name;
@@ -106,7 +106,7 @@ app.get('/goToTeamsPage', (req, res) => {
   })
 })
 
-app.post('/newTeamCreate', (req, res) => {
+app.post('/newTeamCreate', requiresAuth(),(req, res) => {
   const teamid = uuidV4();
   db.query("INSERT INTO listofteams" + " (teamname, roomid) VALUES ('" + req.body.teamName + "','" + teamid + "')", function(err, result) {
     db.query("CREATE TABLE team" + result.insertId + " (id INT PRIMARY KEY, participantEmail VARCHAR(255))");
@@ -119,7 +119,7 @@ app.post('/newTeamCreate', (req, res) => {
   res.redirect('/goToTeamsPage')
 })
 
-app.post('/newTeamJoin', (req, res) => {
+app.post('/newTeamJoin',requiresAuth(), (req, res) => {
   db.query("SELECT * FROM listofteams WHERE roomid ='" + req.body.teamCode + "'", (e1, r1) => {
     if (r1.length != 0) {
       db.query("SELECT * FROM users WHERE email ='" + req.body.emailID + "'", (e2, r2) => {
@@ -131,7 +131,7 @@ app.post('/newTeamJoin', (req, res) => {
   res.redirect("/goToTeamsPage");
 })
 
-app.get("/changeUserName", (req, res) => {
+app.get("/changeUserName", requiresAuth(),(req, res) => {
   if (req.oidc.isAuthenticated() == false)
     res.redirect("/login")
   res.render('home');
@@ -142,7 +142,7 @@ app.post('/changeUserName', requiresAuth(), (req, res) => {
   res.redirect("/goToTeamsPage");
 })
 
-app.get('/:team', (req, res) => {
+app.get('/:team', requiresAuth(),(req, res) => {
   if (req.oidc.isAuthenticated() == false)
     res.redirect("/login")
   if (String(req.params.team).substring(0, 4) === "room") {
@@ -178,7 +178,7 @@ app.get('/:team', (req, res) => {
   }
 })
 
-app.post("/addMessage", (req, res) => {
+app.post("/addMessage", requiresAuth(),(req, res) => {
   db.query("SELECT * FROM users WHERE email ='" + req.oidc.user.email + "'", function(error, result) {
     let username = result[0].name;
     let today = new Date();

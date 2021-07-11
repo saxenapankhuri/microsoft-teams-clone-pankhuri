@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+
+<head>
+  <title>Welcome!</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel='stylesheet' href='assets/css/bootstrap.min.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='assets/css/animate.min.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='styles.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C700italic%2C300%2C400%2C700%2C800%7CMontserrat%3A300italic%2C400italic%2C700italic%2C300%2C400%2C700%7CDosis%3A400%2C700&#038;ver=4.5'
+    type='text/css' media='all' />
+  <link rel='stylesheet' href='icons/elegantline/style.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='assets/css/font-awesome.min.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='assets/css/flexslider.css' type='text/css' media='all' />
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+</head>
+
+<body class="frontpage">
+
+  <!-- Header
+================================================== -->
+  <header id="header">
+    <div id="mega-menu" class="header header2 header-sticky primary-menu icons-no default-skin zoomIn align-right">
+      <nav class="navbar navbar-default redq">
+        <div class="container">
+          <div class="collapse navbar-collapse" id="navbar">
+            <a class="mobile-menu-close"><i class="fa fa-close"></i></a>
+            <div class="menu-top-menu-container">
+              <ul id="menu-top-menu" class="nav navbar-nav nav-list">
+                <li style="background: rgba(255, 255, 0, 0.51);"><a href="/logout">LogOut</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- INTRO
+================================================== -->
+<section id="home" style="padding:160px 0;background-image: url(https://unsplash.it/1324/683?random=0); background-position: center; background-repeat: no-repeat;background-size: cover;background-attachment:fixed;">
+  <div class="container">
+    <div class="textwidget">
+      <h1 class="toptitle">Connection timeout!<br/><br/><i class="fa fa-star roundicon"></i>
+      </h1>
+      <h2>Contact admin or wait for 1 hour and then click the button below</h2>
+      <div class="contactstyle topform">
+        <form method="post" action="/" id="topcontactform">
+          <div class="form">
+            <button class="clearfix btn btn-warning btn-block" type="submit">Retry</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+</section>

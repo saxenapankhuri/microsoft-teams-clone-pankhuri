@@ -199,7 +199,9 @@ io.on('connection', socket => {
   socket.on('error', function(){
   socket.connect();
 });
-
+socket.on('disconnect', () => {
+  socket.connect();
+})
   socket.on('join-room', (roomId, useremail, userId) => {
     let username = useremail
     db.query("SELECT * FROM users WHERE email ='" + useremail + "'", function(error, result) {

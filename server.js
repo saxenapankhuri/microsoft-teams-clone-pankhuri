@@ -60,11 +60,12 @@ app.use('/peerjs', peerServer);
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-// io.connect('https://microsoft-teams-clone-pankhuri.herokuapp.com', {
-//   'reconnection': true,
-//   'reconnectionDelay': 5000,
-//   'reconnectionAttempts': 100000
-// });
+var socket = io.connect();
+
+//tell socket.io to never give up :)
+socket.on('error', function(){
+  socket.socket.reconnect();
+});
 app.get('/', (req, res) => {
   if (req.oidc.isAuthenticated()) {
     res.redirect("/goToTeamsPage")
@@ -195,9 +196,9 @@ app.post("/addMessage", (req, res) => {
 })
 
 io.on('connection', socket => {
-  'reconnection': true,
-  'reconnectionDelay': 25000,
-  'reconnectionAttempts': 100000
+  // 'reconnection': true,
+  // 'reconnectionDelay': 25000,
+  // 'reconnectionAttempts': 100000
   socket.on('join-room', (roomId, useremail, userId) => {
     let username = useremail
     db.query("SELECT * FROM users WHERE email ='" + useremail + "'", function(error, result) {

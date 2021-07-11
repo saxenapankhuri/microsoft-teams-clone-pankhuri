@@ -13,9 +13,6 @@ app.use(bodyParser.urlencoded({
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 const server = require('http').Server(app)
-server.timeout = 25 * 1000;
-server.keepAliveTimeout = 70 * 1000;
-server.headersTimeout = 120 * 1000;
 const io = require('socket.io')(server)
 
 const {
@@ -39,7 +36,7 @@ const config = {
   baseURL: process.env.baseURL,
   clientID: process.env.clientID,
   issuerBaseURL: process.env.issuerBaseURL,
-  secret: 'LONG_RANDOM_STRING'
+  secret: process.env.secret
 };
 
 app.use(auth(config));
@@ -47,8 +44,7 @@ const db = mysql.createConnection({
   host: process.env.host,
   user: process.env.user,
   password: process.env.dbpassword,
-  database: process.env.database,
-  acquireTimeout: 30000
+  database: process.env.database
 })
 
 db.connect((err) => {
@@ -80,6 +76,7 @@ app.get('/goToTeamsPage', (req, res) => {
     if (err) {
       console.log(result);
       console.log(err.fatal)
+      process.kill(0,'SIGTERM')
       res.send("error");
     } else {
       if (result.length == 0) {

@@ -76,10 +76,7 @@ app.get('/goToTeamsPage', (req, res) => {
     if (err) {
       console.log(result);
       console.log(err)
-      var socket = io.connect();
-//tell socket.io to never give up :)
-socket.on('error', function(){
-  socket.socket.reconnect();
+      res.send("Error")
 });
     } else {
       if (result.length == 0) {

@@ -81,6 +81,7 @@ app.get('/goToTeamsPage', requiresAuth(), (req, res) => {
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if (err) {
       //block gets executed when database connection times out
+      db.connect();
       res.render("errorpage");
     } else {
       if (result.length == 0) {

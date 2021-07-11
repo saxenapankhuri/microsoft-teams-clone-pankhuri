@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 const server = require('http').Server(app)
-server.setTimeout(1000* 3600)
+server.timeout(1000* 3600)
 const io = require('socket.io')(server)
 
 const {

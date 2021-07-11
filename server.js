@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 const server = require('http').Server(app)
+server.timeout = 25 * 1000;
+server.keepAliveTimeout = 70 * 1000;
+server.headersTimeout = 120 * 1000;
 const io = require('socket.io')(server)
 
 const {
@@ -76,8 +79,8 @@ app.get('/goToTeamsPage', (req, res) => {
   db.query("SELECT * FROM users WHERE email = '" + req.oidc.user.email + "'", function(err, result) {
     if (err) {
       console.log(result);
-      console.log(err)
-      res.redirect("/");
+      console.log(err.fatal)
+      res.send("error");
     } else {
       if (result.length == 0) {
         let name = req.oidc.user.name;

@@ -192,10 +192,12 @@ app.post("/addMessage", (req, res) => {
 })
 
 io.on('connection', socket => {
+  console.log("okay");
   socket.on('error', function(){
   socket.connect();
 });
 socket.on('disconnect', () => {
+  console.log("disconnect");
   socket.connect();
 })
   socket.on('join-room', (roomId, useremail, userId) => {

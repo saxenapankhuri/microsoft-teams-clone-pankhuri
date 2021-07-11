@@ -67,7 +67,7 @@ db.connect((err) => {
 //landing page
 app.get('/', (req, res) => {
   //check for authentication
-  if (req.oidc.isAuthenticated()) {\
+  if (req.oidc.isAuthenticated()) {
     res.redirect("/goToTeamsPage")
   }
   //if not authenticated, prompt for login
@@ -82,8 +82,7 @@ app.get('/goToTeamsPage', requiresAuth(), (req, res) => {
     if (err) {
       //block gets executed when database connection times out
       res.render("errorpage");
-    }
-    else {
+    } else {
       if (result.length == 0) {
         //new user check
         let name = req.oidc.user.name;
@@ -100,8 +99,7 @@ app.get('/goToTeamsPage', requiresAuth(), (req, res) => {
             teams: []
           })
         })
-      }
-      else {
+      } else {
         //registered user
         let name = req.oidc.user.name
         //load his username and all his teams and
@@ -262,7 +260,7 @@ io.on('connection', socket => {
         let date = today.toLocaleDateString();
         let time = today.toLocaleTimeString();
         let dateTime = String(date) + ' ' + String(time);
-      // update database to store new message
+        // update database to store new message
         db.query("SELECT * FROM listofteams WHERE roomid = '" + roomId + "'", function(e1, r1) {
           db.query("INSERT INTO chat" + r1[0].id + " (mssg, username,time) VALUES ('" + message + "','" + username + "','" + dateTime + "')")
         })
@@ -270,7 +268,7 @@ io.on('connection', socket => {
         io.to(roomId).emit('createMessage', '<b>' + username + ':<\/b><\/br>' + message)
 
       });
-      
+
       // alert disconnection from a user's side
       socket.on('disconnect', () => {
         socket.broadcast.to(roomId).emit('user-disconnected', userId);

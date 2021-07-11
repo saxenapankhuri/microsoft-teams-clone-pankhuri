@@ -14,11 +14,6 @@ app.use(bodyParser.urlencoded({
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
-io.attach(server, {
-  pingInterval: 10000,
-  pingTimeout: 5000,
-  cookie: false
-});
 
 const {
   ExpressPeerServer
@@ -198,7 +193,7 @@ app.post("/addMessage", (req, res) => {
 
 io.on('connection', socket => {
   socket.on('error', function(){
-  socket.socket.connect();
+  socket.connect();
 });
 
   socket.on('join-room', (roomId, useremail, userId) => {

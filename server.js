@@ -77,7 +77,6 @@ app.get('/goToTeamsPage', (req, res) => {
       console.log(result);
       console.log(err)
       res.send("Error")
-});
     } else {
       if (result.length == 0) {
         let name = req.oidc.user.name;

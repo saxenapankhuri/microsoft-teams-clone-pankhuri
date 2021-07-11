@@ -198,7 +198,7 @@ app.post("/addMessage", (req, res) => {
 
 io.on('connection', socket => {
   socket.on('error', function(){
-  socket.socket.reconnect();
+  socket.socket.connect();
 });
 
   socket.on('join-room', (roomId, useremail, userId) => {

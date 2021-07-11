@@ -185,7 +185,7 @@ app.get('/:team', requiresAuth(), (req, res) => {
       //check if user is a part of the team; if false, redirect to home page
       db.query("SELECT * FROM listofteams WHERE roomid = '" + String(req.params.team).substring(4) + "'", function(e1, r1) {
         db.query("SELECT * FROM team" + r1[0].id + " WHERE participantEmail = '" + req.oidc.user.email + "'", function(err, result) {
-          if (result.length == 0)
+          if (result==undefined||result.length == 0)
             res.redirect("/")
         })
       })
@@ -203,7 +203,7 @@ app.get('/:team', requiresAuth(), (req, res) => {
     db.query("SELECT * FROM listofteams WHERE roomid = '" + req.params.team + "'", function(e1, r1) {
       //check if user is a part of the team; if false, redirect to home page
       db.query("SELECT * FROM team" + r1[0].id + " WHERE participantEmail = '" + req.oidc.user.email + "'", function(err, result) {
-        if (result.length == 0)
+        if (result==undefined||result.length == 0)
           res.redirect("/")
       })
       db.query("SELECT * FROM chat" + r1[0].id, function(e2, r2) {

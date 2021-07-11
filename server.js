@@ -14,6 +14,12 @@ app.use(bodyParser.urlencoded({
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+io.attach(server, {
+  pingInterval: 10000,
+  pingTimeout: 5000,
+  cookie: false
+});
+
 const {
   ExpressPeerServer
 } = require('peer');
@@ -60,12 +66,7 @@ app.use('/peerjs', peerServer);
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
-var socket = io.connect();
 
-//tell socket.io to never give up :)
-socket.on('error', function(){
-  socket.socket.reconnect();
-});
 app.get('/', (req, res) => {
   if (req.oidc.isAuthenticated()) {
     res.redirect("/goToTeamsPage")
@@ -196,9 +197,6 @@ app.post("/addMessage", (req, res) => {
 })
 
 io.on('connection', socket => {
-  // 'reconnection': true,
-  // 'reconnectionDelay': 25000,
-  // 'reconnectionAttempts': 100000
   socket.on('join-room', (roomId, useremail, userId) => {
     let username = useremail
     db.query("SELECT * FROM users WHERE email ='" + useremail + "'", function(error, result) {

@@ -76,7 +76,16 @@ app.get('/goToTeamsPage', (req, res) => {
     if (err) {
       console.log(result);
       console.log(err)
-      res.send("Error")
+      db.connect((err) => {
+        if (err) {
+          console.log(err + 'Error connecting to Db');
+          return;
+        }
+        console.log('Connection established');
+        db.query("CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY,email VARCHAR(255) UNIQUE, name VARCHAR(255), userid VARCHAR(255) UNIQUE,  CONSTRAINT userdatabase UNIQUE(email, userid)  )")
+        db.query("CREATE TABLE IF NOT EXISTS listofteams (id INT AUTO_INCREMENT PRIMARY KEY, teamname VARCHAR(255), roomid VARCHAR(255) UNIQUE)")
+      });
+      res.redirect("/");
     } else {
       if (result.length == 0) {
         let name = req.oidc.user.name;
@@ -192,14 +201,6 @@ app.post("/addMessage", (req, res) => {
 })
 
 io.on('connection', socket => {
-  console.log("okay");
-  socket.on('error', function(){
-  socket.connect();
-});
-socket.on('disconnect', () => {
-  console.log("disconnect");
-  socket.connect();
-})
   socket.on('join-room', (roomId, useremail, userId) => {
     let username = useremail
     db.query("SELECT * FROM users WHERE email ='" + useremail + "'", function(error, result) {

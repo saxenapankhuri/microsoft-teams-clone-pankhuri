@@ -197,6 +197,10 @@ app.post("/addMessage", (req, res) => {
 })
 
 io.on('connection', socket => {
+  socket.on('error', function(){
+  socket.socket.reconnect();
+});
+
   socket.on('join-room', (roomId, useremail, userId) => {
     let username = useremail
     db.query("SELECT * FROM users WHERE email ='" + useremail + "'", function(error, result) {

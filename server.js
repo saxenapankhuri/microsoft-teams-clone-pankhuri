@@ -76,7 +76,11 @@ app.get('/goToTeamsPage', (req, res) => {
     if (err) {
       console.log(result);
       console.log(err)
-      res.send("Error")
+      var socket = io.connect();
+//tell socket.io to never give up :)
+socket.on('error', function(){
+  socket.socket.reconnect();
+});
     } else {
       if (result.length == 0) {
         let name = req.oidc.user.name;

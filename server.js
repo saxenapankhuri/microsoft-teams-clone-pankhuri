@@ -44,7 +44,8 @@ const db = mysql.createConnection({
   host: process.env.host,
   user: process.env.user,
   password: process.env.dbpassword,
-  database: process.env.database
+  database: process.env.database,
+  acquireTimeout: 30000
 })
 
 db.connect((err) => {
@@ -76,15 +77,6 @@ app.get('/goToTeamsPage', (req, res) => {
     if (err) {
       console.log(result);
       console.log(err)
-      db.connect((err) => {
-        if (err) {
-          console.log(err + 'Error connecting to Db');
-          return;
-        }
-        console.log('Connection established');
-        db.query("CREATE TABLE IF NOT EXISTS users (id INT AUTO_INCREMENT PRIMARY KEY,email VARCHAR(255) UNIQUE, name VARCHAR(255), userid VARCHAR(255) UNIQUE,  CONSTRAINT userdatabase UNIQUE(email, userid)  )")
-        db.query("CREATE TABLE IF NOT EXISTS listofteams (id INT AUTO_INCREMENT PRIMARY KEY, teamname VARCHAR(255), roomid VARCHAR(255) UNIQUE)")
-      });
       res.redirect("/");
     } else {
       if (result.length == 0) {

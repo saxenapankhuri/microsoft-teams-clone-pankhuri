@@ -2,7 +2,7 @@
 <html lang="en-US" class="no-js">
 
 <head>
-  <title>Welcome!</title>
+  <title>Change User Name</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel='stylesheet' href='assets/css/bootstrap.min.css' type='text/css' media='all' />
@@ -20,8 +20,7 @@
 
 <body class="frontpage">
 
-  <!-- Header
-================================================== -->
+  <!--========================HEADER========================== -->
   <header id="header">
     <div id="mega-menu" class="header header2 header-sticky primary-menu icons-no default-skin zoomIn align-right">
       <nav class="navbar navbar-default redq">
@@ -42,21 +41,20 @@
     </div>
   </header>
 
-  <!-- INTRO
-================================================== -->
-<section id="home" style="padding:160px 0;background-image: url(https://unsplash.it/1324/683?random=0); background-position: center; background-repeat: no-repeat;background-size: cover;background-attachment:fixed;">
-  <div class="container">
-    <div class="textwidget">
-      <h1 class="toptitle">Enter new username below: <br/><br/><i class="fa fa-star roundicon"></i>
-      </h1>
-      <div class="contactstyle topform">
-        <form method="post" action="/changeUserName" id="topcontactform">
-          <div class="form">
-            <input type="text" name="newName" placeholder="New username..." required>
-            <button class="clearfix btn btn-warning btn-block" type="submit">Update Name</button>
-          </div>
-        </form>
+  <!--========================FORM FOR NEW USERNAME========================== -->
+  <section id="home" style="padding:160px 0;background-image: url(https://unsplash.it/1324/683?random=0); background-position: center; background-repeat: no-repeat;background-size: cover;background-attachment:fixed;">
+    <div class="container">
+      <div class="textwidget">
+        <h1 class="toptitle">Enter new username below: <br /><br /><i class="fa fa-star roundicon"></i>
+        </h1>
+        <div class="contactstyle topform">
+          <form method="post" action="/changeUserName" id="topcontactform">
+            <div class="form">
+              <input type="text" name="newName" placeholder="New username..." required>
+              <button class="clearfix btn btn-warning btn-block" type="submit">Update Name</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-    </div>
-</section>
+  </section>

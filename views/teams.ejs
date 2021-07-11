@@ -2,13 +2,14 @@
 <html lang="en-US" class="no-js">
 
 <head>
-  <title>Welcome!</title>
+  <title>Home Page</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
+  //VARIABLES
     const emailID = "<%= emailID %>"
     const name = "<%= name %>"
-     const teams=<%=teams%>
+    const teams = < %= teams % >
   </script>
   <link rel='stylesheet' href='assets/css/bootstrap.min.css' type='text/css' media='all' />
   <link rel='stylesheet' href='assets/css/animate.min.css' type='text/css' media='all' />
@@ -25,8 +26,7 @@
 
 <body class="frontpage">
 
-  <!-- Header
-================================================== -->
+  <!--========================HEADER========================== -->
   <header id="header">
     <div id="mega-menu" class="header header2 header-sticky primary-menu icons-no default-skin zoomIn align-right">
       <nav class="navbar navbar-default redq">
@@ -48,15 +48,15 @@
     </div>
   </header>
 
-  <!-- INTRO
-================================================== -->
+  <!--========================CREATE AND JOIN A TEAM========================== -->
   <section id="home" style="padding:160px 0;background-image: url(https://unsplash.it/1324/683?random=0); background-position: center; background-repeat: no-repeat;background-size: cover;background-attachment:fixed;">
     <div class="container">
       <div class="textwidget">
         <div class="" style="padding: 5%;margin-bottom: 100px;">
+          <!-- create new team -->
           <div class="contactstyle topform form_left">
             <h3 style="text-align: center;">Create New Team</h3>
-            <form method="post" action="/newTeamCreate" >
+            <form method="post" action="/newTeamCreate">
               <div class="form ">
                 <input type="hidden" name="emailID" value="<%= emailID %>">
                 <input type="text" name="teamName" placeholder="Enter name of new team..." required>
@@ -64,6 +64,7 @@
               </div>
             </form>
           </div>
+          <!-- join a team -->
           <div class="contactstyle topform form_right">
             <h3 style="text-align: center;">Join a Team</h3>
             <form method="post" action="/newTeamJoin">
@@ -79,13 +80,13 @@
     </div>
   </section>
 
+  <!--========================USER'S TEAMS========================== -->
   <section id="team" class="panel-grid" style="background:#141414; padding:3%;">
 
-      <h1 class="toptitle">My Teams <br /><br /><i class="fa fa-star roundicon"></i>
-      </h1>
+    <h1 class="toptitle">My Teams <br /><br /><i class="fa fa-star roundicon"></i>
+    </h1>
     <div class="nopadding">
-      <!-- #person1 -->
-        <% let i=0;teams.forEach(function(eachTeam){%>
+      <% let i=0;teams.forEach(function(eachTeam){%>
       <div class="col-md-3" style="background:#141414; padding: 2%;">
         <div class="team-boxes">
           <div class="team-thumb overlay-image view-overlay">
@@ -110,7 +111,7 @@
             <b>Invite Code:</b> <%=eachTeam.teamid%>
           </p>
           <form method="get" action="/<%=eachTeam.teamid%>">
-              <button class="clearfix btn btn-warning btn-block" type="submit">Go to Team!</button>
+            <button class="clearfix btn btn-warning btn-block" type="submit">Go to Team!</button>
           </form>
         </div>
       </div>

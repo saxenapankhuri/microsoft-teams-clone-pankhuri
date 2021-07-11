@@ -13,12 +13,15 @@ if (adapter.browserDetails.browser == 'firefox') {
   adapter.browserShim.shimGetDisplayMedia(window, 'screen');
 }
 
+//respond once audio and video are accessible
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
 }).then(stream => {
   myVideoStream = stream;
+  //append own video to the grid
   addVideoStream(myVideo, stream)
+  //append video to video grids of all connections
   myPeer.on('call', call => {
     call.answer(stream)
     const video = document.createElement('video')
@@ -27,10 +30,12 @@ navigator.mediaDevices.getUserMedia({
     })
   })
 
+  //alert on connection of new user
   socket.on('user-connected', userId => {
     connectToNewUser(userId, stream)
   })
 
+  //MESSAGES
   // input value
   let text = $("input");
   // when press enter send message
@@ -40,28 +45,31 @@ navigator.mediaDevices.getUserMedia({
       text.val('')
     }
   });
+  //alert for new message sent
   socket.on("createMessage", message => {
     $("ul").append(`<li class="message">${message}</li>`);
     scrollToBottom()
   })
-
+  //alert for user disconnected
   socket.on('user-disconnected', userId => {
     if (peers[userId]) peers[userId].close()
   })
 
 })
 
+//emit 'join-room' when a user logs in
 myPeer.on('open', id => {
-  socket.emit('join-room', ROOM_ID,useremail, id)
+  socket.emit('join-room', ROOM_ID, useremail, id)
 
-
-    socket.on("initializeChatBox", (message,username) =>{
-      $("ul").append(`<li class="message"><b>${username}:</b><br>${message}</li>`);
-      scrollToBottom()
-    })
+  //initialize chatbox with chat history
+  socket.on("initializeChatBox", (message, username) => {
+    $("ul").append(`<li class="message"><b>${username}:</b><br>${message}</li>`);
+    scrollToBottom()
+  })
 })
 
 
+//connect to new peer
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
@@ -75,6 +83,7 @@ function connectToNewUser(userId, stream) {
   peers[userId] = call
 }
 
+//connect to screen video stream
 function connectToScreen(userId, stream) {
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
@@ -86,6 +95,7 @@ function connectToScreen(userId, stream) {
   })
 }
 
+//append video to video-grid
 function addVideoStream(video, stream) {
   video.srcObject = stream
   videoGrid.append(video)
@@ -94,7 +104,8 @@ function addVideoStream(video, stream) {
   })
 }
 
-function addScreenStream(video, stream){
+//append screen stream to video-grid
+function addScreenStream(video, stream) {
   video.srcObject = stream
   videoGrid.append(video)
   video.play()
@@ -103,12 +114,13 @@ function addScreenStream(video, stream){
   })
 }
 
+//scroll to bottom of chatbox
 const scrollToBottom = () => {
   var d = $('.main__chat_window');
   d.scrollTop(d.prop("scrollHeight"));
 }
 
-
+//mute and unmute self
 const muteUnmute = () => {
   const enabled = myVideoStream.getAudioTracks()[0].enabled;
   if (enabled) {
@@ -120,6 +132,7 @@ const muteUnmute = () => {
   }
 }
 
+//stop sharing video stream
 const playStop = () => {
   console.log('object')
   let enabled = myVideoStream.getVideoTracks()[0].enabled;
@@ -132,6 +145,7 @@ const playStop = () => {
   }
 }
 
+//update state of mute buton
 const setMuteButton = () => {
   const html = `
     <i class="fas fa-microphone"></i>
@@ -139,7 +153,6 @@ const setMuteButton = () => {
   `
   document.querySelector('.main__mute_button').innerHTML = html;
 }
-
 const setUnmuteButton = () => {
   const html = `
     <i class="unmute fas fa-microphone-slash"></i>
@@ -148,6 +161,7 @@ const setUnmuteButton = () => {
   document.querySelector('.main__mute_button').innerHTML = html;
 }
 
+//update state of video button
 const setStopVideo = () => {
   const html = `
     <i class="fas fa-video"></i>
@@ -164,38 +178,37 @@ const setPlayVideo = () => {
   document.querySelector('.main__video_button').innerHTML = html;
 }
 
-// socket.on('screensharing', (userId) => {
-//   connectToScreen(userId, stream);
-// })
-const startScreenShare=()=> {
-    navigator.mediaDevices.getDisplayMedia({
-      video: true
-    }).then(
-      stream => {
-        const screenStream=stream
-        myScreenStream = stream;
-        addScreenStream(myScreen, stream)
-        myPeer.on('call', call => {
-          call.answer(stream)
-          const video = document.createElement('video')
-          call.on('stream', stream => {
-            addVideoStream(video, stream)
-          })
+//respond when some user activates screen sharing
+const startScreenShare = () => {
+  navigator.mediaDevices.getDisplayMedia({
+    video: true
+  }).then(
+    stream => {
+      const screenStream = stream
+      myScreenStream = stream;
+      addScreenStream(myScreen, stream)
+      myPeer.on('call', call => {
+        call.answer(stream)
+        const video = document.createElement('video')
+        call.on('stream', stream => {
+          addVideoStream(video, stream)
         })
+      })
 
-        socket.on('user-connected', userId => {
-          const call = myPeer.call(userId, stream)
-          const video = document.createElement('video')
-        })
+      socket.on('user-connected', userId => {
+        const call = myPeer.call(userId, stream)
+        const video = document.createElement('video')
+      })
 
-        socket.on('user-disconnected', userId => {
-          if (peers[userId]) peers[userId].close()
-        })
-      }
-    )
-  }
-
-    const leave_user = () => {
-      setStopVideo()
-      window.location.href = "https://microsoft-teams-clone-pankhuri.herokuapp.com"
+      socket.on('user-disconnected', userId => {
+        if (peers[userId]) peers[userId].close()
+      })
     }
+  )
+}
+
+//disconnect a user and redirect to home page
+const leave_user = () => {
+  setStopVideo()
+  window.location.href = "https://microsoft-teams-clone-pankhuri.herokuapp.com"
+}

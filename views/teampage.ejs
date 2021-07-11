@@ -2,14 +2,14 @@
 <html lang="en-US" class="no-js">
 
 <head>
-  <title>Welcome!</title>
+  <title>Team</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
+  //variables
     const roomsno = < %= roomsno % >
       const roomId = < %= roomId % >
         const messages = < %= messages % >
-        const participants = < %= participants % >
   </script>
   <link rel='stylesheet' href='assets/css/bootstrap.min.css' type='text/css' media='all' />
   <link rel='stylesheet' href='assets/css/animate.min.css' type='text/css' media='all' />
@@ -27,8 +27,7 @@
 
 <body class="frontpage" style="background-color: #141414;">
 
-  <!-- Header
-================================================== -->
+  <!--========================HEADER========================== -->
   <header id="header">
     <div id="mega-menu" class="header header2 header-sticky primary-menu icons-no default-skin zoomIn align-right">
       <nav class="navbar navbar-default redq">
@@ -58,6 +57,8 @@
       </nav>
     </div>
   </header>
+
+    <!--========================MEETING LINK BUTTON========================== -->
   <section id="meeting_link" style="padding: 0;background-image: url(https://unsplash.it/1324/683?random=0); background-position: center; background-repeat: no-repeat;background-attachment:fixed; height: 400px;">
     <div class="container">
       <div class="textwidget">
@@ -73,9 +74,11 @@
     </div>
   </section>
 
-  <section id="messages"style="padding: 8% 20%;">
+  <!--========================MESSAGES========================== -->
+  <section id="messages" style="padding: 8% 20%;">
     <h1 class="toptitle">Messages<br /><br />
     </h1>
+    <!-- CHAT HISTORY -->
     <div style="padding:0% 5%; background-color:#f9f9f9  ;height: 300px;overflow-y: auto;">
       <% messages.forEach(function(eachMssg){%>
       <div class="" style="background:#eeeeee ;margin: 1%;">
@@ -83,6 +86,7 @@
       </div>
       <%})%>
     </div>
+    <!-- NEW MESSAGE FORM -->
     <div class="" style="background: #eeeeee; width: inherit; padding: 5%;">
       <form method="post" action="/addMessage">
         <input type="hidden" name="roomsno" value="<%=roomsno %>">

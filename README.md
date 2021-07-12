@@ -4,18 +4,18 @@ Built for completion of Microsoft Engage 2021 project.
 
 In simple words, the website helps establish peer to peer video conferencing. Other features include user authentication, screensharing, pre and post video call chat functionality, creating and joining teams and changing username.  
 
-TECH STACK  
-Backend 
-  NodeJS 14.17.0  
-  Frameworks: WebRTC, express, peerjs, socket, uuid, google-auth-library  
+TECH STACK     
+Backend     
+  NodeJS 14.17.0      
+  Frameworks: WebRTC, express, peerjs, socket, uuid, google-auth-library      
   Database: MySQL 8.0.25  
-Frontend  
+Frontend      
   HTML/CSS  
   Bootstrap 5.0  
   JavaScript HTML Document Object Model  
-Version control 
+Version control     
   Git 2.30.0  
-Authentication  
+Authentication      
   Auth0
 
 GETTING STARTED  
